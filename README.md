@@ -3,7 +3,7 @@
 ## Compile Command
 
 ```shell
-    g++ -std=c++17 -Iinclude src/Block.cpp src/utils.cpp main.cpp -o MyBlockchain
+    g++ -std=c++17 -Iinclude src/Block.cpp src/utils.cpp main.cpp
 ```
 
 ## Setting Up

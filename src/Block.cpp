@@ -6,29 +6,44 @@
 Block::Block()
 	: PrevBlock{nullptr},
 	  index{0},
-	  timestamp{epochTimeStamp()},
-	  nonce{0},
+	  timestamp{},
 	  data{""},
 	  merkle_root{""},
-	  hash{""} {}
+	  hash{} {}
 
 Block::Block(Block& PrevBlock, std::string data)
 	: PrevBlock{&PrevBlock},
 	  index{++PrevBlock.index},
-	  timestamp{epochTimeStamp()},
-	  nonce{0},
+	  timestamp{},
 	  data{data},
 	  merkle_root{""},
-	  hash{""} {}
+	  hash{} {}
 
 std::string Block::info()
 {
 	std::ostringstream oss;
 	oss << "Block " << index << "\n"
 		<< "Epoch Timestamp: " << timestamp << "\n"
-		<< "Block Hash: " << hash << "\n"
-		<< "Previous Block Hash: " << (PrevBlock ? PrevBlock->hash : "None") << "\n"
+		<< "Block Hash: " << hashToHexString(hash) << "\n"
+		<< "Previous Block Hash: " << (PrevBlock ? hashToHexString(PrevBlock->hash) : "None") << "\n"
 		<< "Merkle Root: " << merkle_root << "\n"
-		<< "Status: " << (hash == "" ? "Not Mined" : "Mined");
+		<< "Status: " << (!isHashUnitialised(hash) ? "Not Mined" : "Mined") << "\n"
+		<< "Data: " << "\n"
+		<< data << "\n";
 	return oss.str();
+}
+
+void Block::mine()
+{
+	// Initialising content
+	timestamp = epochTimeStamp();
+
+	// TODO Calculate Merkle root
+
+	// Calculating hash
+	std::ostringstream oss;
+	oss << index << timestamp << PrevBlock->hash << data << merkle_root;
+
+	std::string block = oss.str();
+	computeSHA256(block, hash);
 }

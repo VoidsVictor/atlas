@@ -2,6 +2,7 @@
 #define BLOCK_H
 
 #include <ctime>
+#include <openssl/sha.h>
 #include <string>
 
 class Block
@@ -16,14 +17,23 @@ class Block
 		Block* PrevBlock;
 
 		// Cryptographic part of the block
-		int nonce;
+		// int nonce;
 		std::string merkle_root;
-		std::string hash;
+		unsigned char hash[SHA256_DIGEST_LENGTH];
 
 	public:
+		// Genesis Block
 		Block();
+
+		// Standard Block
 		Block(Block& PrevBlock, std::string data);
+
+		// Block information
 		std::string info();
+
+		// Mine Block
+		// TODO Should contain a smart contract executer object to execute smart contracts as input
+		void mine();
 };
 
 #endif
