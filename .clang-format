@@ -1,0 +1,9 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+TabWidth: 4
+UseTab: Always
+BreakBeforeBraces: Allman         # Places braces on new lines for classes and functions
+AllowShortFunctionsOnASingleLine: Empty  # Only allow truly empty function bodies (like your constructor) to stay on one line
+PointerAlignment: Left            # Formats pointer declarations as "double *elem;"
+IndentAccessModifiers: true       # Indents access specifiers (private/public) one tab in from the class brace
+ColumnLimit: 0                    # Disables the column limit so lines won't be broken up automatically
