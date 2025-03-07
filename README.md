@@ -14,3 +14,11 @@
     sudo apt update
     sudo apt install openssl libssl-dev
 ```
+
+## TODO
+
+- [ ] Implement Block
+    - [x] Fix the deprecated openssl component
+    - [ ] Change data part to ordered map
+    - [ ] Make the merkle root implementation
+- [ ] Develop the Makefile

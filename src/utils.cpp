@@ -2,7 +2,8 @@
 #include <cstring>
 #include <iomanip>
 #include <ios>
-#include <openssl/sha.h>
+#include <openssl/evp.h>
+#include <stdexcept>
 
 #include "utils.h"
 
@@ -16,10 +17,30 @@ time_t epochTimeStamp()
 // Hashes a string using SHA256 and outputs the raw hash
 void computeSHA256(const std::string& data, unsigned char* hash)
 {
-	SHA256_CTX sha256;
-	SHA256_Init(&sha256);
-	SHA256_Update(&sha256, data.c_str(), data.size());
-	SHA256_Final(hash, &sha256); // Writes directly to 'hash'
+	EVP_MD_CTX* context = EVP_MD_CTX_new();
+	if (context == nullptr)
+		throw std::runtime_error("Failed to create EVP_MD_CTX");
+
+	if (EVP_DigestInit_ex(context, EVP_sha256(), nullptr) != 1)
+	{
+		EVP_MD_CTX_free(context);
+		throw std::runtime_error("EVP_DigestInit_ex failed");
+	}
+
+	if (EVP_DigestUpdate(context, data.c_str(), data.size()) != 1)
+	{
+		EVP_MD_CTX_free(context);
+		throw std::runtime_error("EVP_DigestUpdate failed");
+	}
+
+	unsigned int lengthOfHash = 0;
+	if (EVP_DigestFinal_ex(context, hash, &lengthOfHash) != 1)
+	{
+		EVP_MD_CTX_free(context);
+		throw std::runtime_error("EVP_DigestFinal_ex failed");
+	}
+
+	EVP_MD_CTX_free(context);
 }
 
 // Converts a raw SHA256 hash (unsigned char array) to a hex string
