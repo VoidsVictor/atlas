@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "Block.h"
-#include "utils.h"
+#include "Block.hpp"
+#include "utils.hpp"
 
 using namespace std;
 
@@ -28,6 +28,8 @@ int main()
 	block2.mine();
 	cout << "Block 2:\n"
 		 << block2.info() << endl;
+
+	cout << block2.getHash().data() << endl;
 
 	return 0;
 }

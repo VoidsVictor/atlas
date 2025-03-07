@@ -1,3 +1,4 @@
+#include <array>
 #include <sstream>
 
 #include "Block.hpp"
@@ -19,6 +20,26 @@ Block::Block(Block& PrevBlock, std::string data)
 	  merkle_root{""},
 	  hash{} {}
 
+// Getter functions
+int Block::getIndex()
+{
+	return index;
+}
+time_t Block::getTimestamp()
+{
+	return timestamp;
+}
+std::string Block::getData()
+{
+	return data;
+}
+std::array<unsigned char, SHA256_DIGEST_LENGTH> Block::getHash()
+{
+	std::array<unsigned char, SHA256_DIGEST_LENGTH> hashArray;
+	std::copy(std::begin(hash), std::end(hash), hashArray.begin());
+	return hashArray;
+}
+
 std::string Block::info()
 {
 	std::ostringstream oss;
@@ -27,7 +48,7 @@ std::string Block::info()
 		<< "Block Hash: " << hashToHexString(hash) << "\n"
 		<< "Previous Block Hash: " << (PrevBlock ? hashToHexString(PrevBlock->hash) : "None") << "\n"
 		<< "Merkle Root: " << merkle_root << "\n"
-		<< "Status: " << (!isHashUnitialised(hash) ? "Not Mined" : "Mined") << "\n"
+		<< "Status: " << (!isHashUnitialised(hash.data()) ? "Not Mined" : "Mined") << "\n"
 		<< "Data: " << "\n"
 		<< data << "\n";
 	return oss.str();
@@ -42,8 +63,8 @@ void Block::mine()
 
 	// Calculating hash
 	std::ostringstream oss;
-	oss << index << timestamp << PrevBlock->hash << data << merkle_root;
+	oss << index << timestamp << PrevBlock->hash.data() << data << merkle_root;
 
 	std::string block = oss.str();
-	computeSHA256(block, hash);
+	computeSHA256(block, &hash);
 }

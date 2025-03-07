@@ -1,3 +1,4 @@
+#include <array>
 #include <chrono>
 #include <cstring>
 #include <iomanip>
@@ -15,7 +16,7 @@ time_t epochTimeStamp()
 }
 
 // Hashes a string using SHA256 and outputs the raw hash
-void computeSHA256(const std::string& data, unsigned char* hash)
+void computeSHA256(const std::string& data, std::array<unsigned char, SHA256_DIGEST_LENGTH>* hash)
 {
 	EVP_MD_CTX* context = EVP_MD_CTX_new();
 	if (context == nullptr)
@@ -34,7 +35,7 @@ void computeSHA256(const std::string& data, unsigned char* hash)
 	}
 
 	unsigned int lengthOfHash = 0;
-	if (EVP_DigestFinal_ex(context, hash, &lengthOfHash) != 1)
+	if (EVP_DigestFinal_ex(context, hash->data(), &lengthOfHash) != 1)
 	{
 		EVP_MD_CTX_free(context);
 		throw std::runtime_error("EVP_DigestFinal_ex failed");
@@ -44,7 +45,7 @@ void computeSHA256(const std::string& data, unsigned char* hash)
 }
 
 // Converts a raw SHA256 hash (unsigned char array) to a hex string
-std::string hashToHexString(const unsigned char* hash, size_t length)
+std::string hashToHexString(std::array<unsigned char, SHA256_DIGEST_LENGTH> hash, size_t length)
 {
 	std::ostringstream oss;
 	oss << std::hex << std::setfill('0'); // Set hex formatting and fill with '0' for uniformity

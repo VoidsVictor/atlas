@@ -1,6 +1,7 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
+#include <array>
 #include <ctime>
 #include <map>
 #include <openssl/sha.h>
@@ -21,7 +22,7 @@ class Block
 		// Cryptographic part of the block
 		// TODO Implement merkle root
 		std::string merkle_root;
-		unsigned char hash[SHA256_DIGEST_LENGTH];
+		std::array<unsigned char, SHA256_DIGEST_LENGTH> hash;
 
 	public:
 		// Genesis Block
@@ -33,8 +34,14 @@ class Block
 		// Block information
 		std::string info();
 
+		// Getters
+		int getIndex();
+		time_t getTimestamp();
+		std::string getData();
+		std::array<unsigned char, SHA256_DIGEST_LENGTH> getHash();
+
 		// Mine Block
-		// TODO Should contain a smart contract executer object to execute smart contracts as input
+		// TODO Should contain a smart contract executer object as input to execute smart contracts
 		void mine();
 };
 

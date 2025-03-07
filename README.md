@@ -32,10 +32,11 @@
 ### v0.0.1 (Pre-Alpha)
 
 - [ ] Implement Block
-    - [ ] Change data part to ordered map or json
+    - [ ] Change data part to json
     - [ ] Make the merkle root implementation
     - [x] Fix the deprecated openssl component
 - [ ] Develop the Blockchain
+- [ ] Make the Smart Contract System (SCS)
 - [ ] Make the Peer Discovery System (PDS)
 - [ ] Make the service
 - [ ] Make the human interface
