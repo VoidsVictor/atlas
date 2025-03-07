@@ -1,21 +1,21 @@
 #include <sstream>
 
-#include "Block.h"
-#include "utils.h"
+#include "Block.hpp"
+#include "utils.hpp"
 
 Block::Block()
-	: PrevBlock{nullptr},
-	  index{0},
+	: index{0},
 	  timestamp{},
 	  data{""},
+	  PrevBlock{nullptr},
 	  merkle_root{""},
 	  hash{} {}
 
 Block::Block(Block& PrevBlock, std::string data)
-	: PrevBlock{&PrevBlock},
-	  index{++PrevBlock.index},
+	: index{++PrevBlock.index},
 	  timestamp{},
 	  data{data},
+	  PrevBlock{&PrevBlock},
 	  merkle_root{""},
 	  hash{} {}
 

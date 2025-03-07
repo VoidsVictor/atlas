@@ -5,8 +5,6 @@
 #include <openssl/sha.h>
 #include <string>
 
-#include "Block.h"
-
 time_t epochTimeStamp();
 void hash(std::string hash);
 void computeSHA256(const std::string& data, unsigned char* hash);

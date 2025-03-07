@@ -2,6 +2,7 @@
 #define BLOCK_H
 
 #include <ctime>
+#include <map>
 #include <openssl/sha.h>
 #include <string>
 
@@ -13,11 +14,12 @@ class Block
 		time_t timestamp;
 
 		// Data part of the block
+		// std::map<std::string, std::string> data;
 		std::string data;
 		Block* PrevBlock;
 
 		// Cryptographic part of the block
-		// int nonce;
+		// TODO Implement merkle root
 		std::string merkle_root;
 		unsigned char hash[SHA256_DIGEST_LENGTH];
 

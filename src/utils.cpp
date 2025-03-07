@@ -5,7 +5,7 @@
 #include <openssl/evp.h>
 #include <stdexcept>
 
-#include "utils.h"
+#include "utils.hpp"
 
 // Returns the current epoch time
 time_t epochTimeStamp()
