@@ -7,16 +7,29 @@ SRC = src
 BIN = bin
 TESTS = tests
 INCLUDE = include
+BIN_TESTS = $(BIN)/tests
 
-block_test:
-	$(CXX) $(CXXFLAGS) -I${INCLUDE} $(SRC)/Block.cpp $(SRC)/utils.cpp $(TESTS)/test_block.cpp $(LDFLAGS) $(LDTESTFLAGS) -o $(BIN)/tests/test_block
+# Ensure bin and bin/tests directories exist before compiling
+$(BIN) $(BIN_TESTS):
+	mkdir -p $(BIN) $(BIN_TESTS)
 
-test: block_test
+# Build test executable
+$(BIN_TESTS)/test_block: $(SRC)/Block.cpp $(SRC)/utils.cpp $(TESTS)/test_block.cpp | $(BIN) $(BIN_TESTS)
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE) $^ $(LDFLAGS) $(LDTESTFLAGS) -o $@
+
+# Run tests
+test: $(BIN_TESTS)/test_block
 	@echo "Running tests..."
-	@for test in $(BIN)/tests/*; do \
+	@for test in $(BIN_TESTS)/*; do \
 		echo "Running $$test..."; \
 		$$test; \
 	done
 
-.PHONY:
-	block_test && ./bin/tests/test_block
+# Build everything
+all: $(BIN_TESTS)/test_block
+
+# Clean build artifacts
+clean:
+	rm -rf $(BIN)
+
+.PHONY: all test clean
