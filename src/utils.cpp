@@ -6,6 +6,7 @@
 #include <cstring>
 #include <iomanip>
 #include <ios>
+#include <iostream>
 #include <openssl/evp.h>
 #include <sstream>
 #include <stdexcept>
@@ -191,6 +192,7 @@ array<unsigned char, SHA256_DIGEST_LENGTH> merkleRoot(const string& data)
 	catch (const json::parse_error& e)
 	{
 		// If parsing fails, treat the input as plain text.
+		// std::cout << "Parsing failed: " << e.what() << endl;
 		std::array<unsigned char, SHA256_DIGEST_LENGTH> hash;
 		computeSHA256(data, &hash);
 		return hash;
