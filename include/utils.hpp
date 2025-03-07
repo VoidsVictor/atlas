@@ -18,4 +18,7 @@ std::string hashToHexString(const std::array<unsigned char, SHA256_DIGEST_LENGTH
 // Checks whether a hash is uninitialized (i.e. all zeros).
 bool isHashUnitialised(const unsigned char hash[SHA256_DIGEST_LENGTH]);
 
+// Calculate the merkle root for the data
+std::array<unsigned char, SHA256_DIGEST_LENGTH> merkleRoot(const std::string& data);
+
 #endif // UTILS_H

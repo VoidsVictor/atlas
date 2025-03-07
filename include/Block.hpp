@@ -21,7 +21,7 @@ class Block
 
 		// Cryptographic part of the block
 		// TODO Implement merkle root
-		std::string merkle_root;
+		std::array<unsigned char, SHA256_DIGEST_LENGTH> merkle_root;
 		std::array<unsigned char, SHA256_DIGEST_LENGTH> hash;
 
 	public:

@@ -112,77 +112,87 @@ array<unsigned char, SHA256_DIGEST_LENGTH> computeMerkleRoot(vector<array<unsign
 // Parses a string as a JSON object and calculates the Merkle Root
 array<unsigned char, SHA256_DIGEST_LENGTH> merkleRoot(const string& data)
 {
-	json jsonData = json::parse(data);
-
-	if (jsonData.is_string())
+	try
 	{
-		array<unsigned char, SHA256_DIGEST_LENGTH> hash;
-		computeSHA256(jsonData.get<string>(), &hash);
-		return hash;
-	}
+		json jsonData = json::parse(data);
 
-	if (jsonData.is_number() || jsonData.is_boolean() || jsonData.is_null())
-	{
-		array<unsigned char, SHA256_DIGEST_LENGTH> hash;
-		computeSHA256(jsonData.dump(), &hash); // Convert primitive types to string and hash them
-		return hash;
-	}
-
-	if (jsonData.is_array())
-	{
-		// Handle empty array case
-		if (jsonData.empty())
+		if (jsonData.is_string())
 		{
-			array<unsigned char, SHA256_DIGEST_LENGTH> hash = {0};
+			array<unsigned char, SHA256_DIGEST_LENGTH> hash;
+			computeSHA256(jsonData.get<string>(), &hash);
 			return hash;
 		}
 
-		vector<array<unsigned char, SHA256_DIGEST_LENGTH>> hashedElements;
-		for (size_t i = 0; i < jsonData.size(); ++i)
+		if (jsonData.is_number() || jsonData.is_boolean() || jsonData.is_null())
 		{
-			// Recursively compute the Merkle Root for each element.
-			array<unsigned char, SHA256_DIGEST_LENGTH> elementHash = merkleRoot(jsonData[i].dump());
-			// Convert the resulting hash to a hex string for deterministic concatenation
-			string hashHex = hashToHexString(elementHash, SHA256_DIGEST_LENGTH);
-			string hashPayload = to_string(i) + ":" + hashHex;
 			array<unsigned char, SHA256_DIGEST_LENGTH> hash;
-			computeSHA256(hashPayload, &hash);
-			hashedElements.push_back(hash);
-		}
-		return computeMerkleRoot(hashedElements);
-	}
-
-	if (jsonData.is_object())
-	{
-		// Handle empty object case
-		if (jsonData.empty())
-		{
-			array<unsigned char, SHA256_DIGEST_LENGTH> hash = {0};
+			computeSHA256(jsonData.dump(), &hash); // Convert primitive types to string and hash them
 			return hash;
 		}
 
-		vector<array<unsigned char, SHA256_DIGEST_LENGTH>> hashedKeyValues;
-		vector<string> sortedKeys;
-
-		for (const auto& [key, _] : jsonData.items())
+		if (jsonData.is_array())
 		{
-			sortedKeys.push_back(key);
+			// Handle empty array case
+			if (jsonData.empty())
+			{
+				array<unsigned char, SHA256_DIGEST_LENGTH> hash = {0};
+				return hash;
+			}
+
+			vector<array<unsigned char, SHA256_DIGEST_LENGTH>> hashedElements;
+			for (size_t i = 0; i < jsonData.size(); ++i)
+			{
+				// Recursively compute the Merkle Root for each element.
+				array<unsigned char, SHA256_DIGEST_LENGTH> elementHash = merkleRoot(jsonData[i].dump());
+				// Convert the resulting hash to a hex string for deterministic concatenation
+				string hashHex = hashToHexString(elementHash, SHA256_DIGEST_LENGTH);
+				string hashPayload = to_string(i) + ":" + hashHex;
+				array<unsigned char, SHA256_DIGEST_LENGTH> hash;
+				computeSHA256(hashPayload, &hash);
+				hashedElements.push_back(hash);
+			}
+			return computeMerkleRoot(hashedElements);
 		}
 
-		sort(sortedKeys.begin(), sortedKeys.end()); // Ensure deterministic order
-
-		for (const auto& key : sortedKeys)
+		if (jsonData.is_object())
 		{
-			array<unsigned char, SHA256_DIGEST_LENGTH> valueHash = merkleRoot(jsonData[key].dump());
-			string hashHex = hashToHexString(valueHash, SHA256_DIGEST_LENGTH);
-			string hashPayload = key + ":" + hashHex;
-			array<unsigned char, SHA256_DIGEST_LENGTH> hash;
-			computeSHA256(hashPayload, &hash);
-			hashedKeyValues.push_back(hash);
+			// Handle empty object case
+			if (jsonData.empty())
+			{
+				array<unsigned char, SHA256_DIGEST_LENGTH> hash = {0};
+				return hash;
+			}
+
+			vector<array<unsigned char, SHA256_DIGEST_LENGTH>> hashedKeyValues;
+			vector<string> sortedKeys;
+
+			for (const auto& [key, _] : jsonData.items())
+			{
+				sortedKeys.push_back(key);
+			}
+
+			sort(sortedKeys.begin(), sortedKeys.end()); // Ensure deterministic order
+
+			for (const auto& key : sortedKeys)
+			{
+				array<unsigned char, SHA256_DIGEST_LENGTH> valueHash = merkleRoot(jsonData[key].dump());
+				string hashHex = hashToHexString(valueHash, SHA256_DIGEST_LENGTH);
+				string hashPayload = key + ":" + hashHex;
+				array<unsigned char, SHA256_DIGEST_LENGTH> hash;
+				computeSHA256(hashPayload, &hash);
+				hashedKeyValues.push_back(hash);
+			}
+
+			return computeMerkleRoot(hashedKeyValues);
 		}
 
-		return computeMerkleRoot(hashedKeyValues);
+		throw runtime_error("Unhandled JSON type encountered!");
 	}
-
-	throw runtime_error("Unhandled JSON type encountered!");
+	catch (const json::parse_error& e)
+	{
+		// If parsing fails, treat the input as plain text.
+		std::array<unsigned char, SHA256_DIGEST_LENGTH> hash;
+		computeSHA256(data, &hash);
+		return hash;
+	}
 }
