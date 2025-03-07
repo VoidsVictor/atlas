@@ -33,32 +33,6 @@ TEST(BlockTest, BlockIndexing)
 	EXPECT_EQ(block2.info().find("Block 2") != std::string::npos, true); // Block 2 should have index 2
 }
 
-// Test Hash Changes After Mining
-// TEST(BlockTest, MiningChangesHash)
-// {
-// 	Block genesisBlock;
-// 	Block newBlock(genesisBlock, "Sample Data");
-
-// 	unsigned char oldHash[SHA256_DIGEST_LENGTH];
-// 	std::memcpy(oldHash, newBlock.getHash(), SHA256_DIGEST_LENGTH); // Copy old hash
-
-// 	newBlock.mine();
-
-// 	EXPECT_NE(std::memcmp(oldHash, newBlock.hash, SHA256_DIGEST_LENGTH), 0); // Hash should change after mining
-// }
-
-// Test Previous Block Linkage
-// TEST(BlockTest, PreviousBlockLinking)
-// {
-// 	Block genesisBlock;
-// 	Block newBlock(genesisBlock, "Sample Data");
-
-// 	std::string prevHash = hashToHexString(genesisBlock.getHash());
-// 	std::string newBlockInfo = newBlock.info();
-
-// 	EXPECT_NE(newBlockInfo.find(prevHash), std::string::npos); // Ensure it contains previous block's hash
-// }
-
 // Test Mining Updates Timestamp
 TEST(BlockTest, MiningUpdatesTimestamp)
 {

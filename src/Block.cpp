@@ -4,6 +4,7 @@
 #include "Block.hpp"
 #include "utils.hpp"
 
+// Block initialisiation function
 Block::Block()
 	: index{0},
 	  timestamp{},
@@ -21,6 +22,7 @@ Block::Block(Block& PrevBlock, std::string data)
 	  hash{} {}
 
 // Getter functions
+// TODO Ensure to give just copy of the data
 int Block::getIndex()
 {
 	return index;
@@ -35,11 +37,10 @@ std::string Block::getData()
 }
 std::array<unsigned char, SHA256_DIGEST_LENGTH> Block::getHash()
 {
-	std::array<unsigned char, SHA256_DIGEST_LENGTH> hashArray;
-	std::copy(std::begin(hash), std::end(hash), hashArray.begin());
-	return hashArray;
+	return hash;
 }
 
+// Function to output block information
 std::string Block::info()
 {
 	std::ostringstream oss;
@@ -54,6 +55,7 @@ std::string Block::info()
 	return oss.str();
 }
 
+// Function to mine block
 void Block::mine()
 {
 	// Initialising content
