@@ -22,6 +22,8 @@
 
 3. Install `emscripten` by following the official [guide](https://emscripten.org/docs/getting_started/downloads.html)
 
+4. Install WASMedge
+
 ## Structure of the Data Section
 
 - Data section is basically a string
