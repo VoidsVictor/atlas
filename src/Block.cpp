@@ -11,7 +11,7 @@ Block::Block()
 	  timestamp(0),
 	  data(""),
 	  PrevBlock(nullptr),
-	  merkle_root{0},
+	  merkle_root{},
 	  hash{} {}
 
 Block::Block(Block& previousBlock, std::string data)
@@ -19,7 +19,7 @@ Block::Block(Block& previousBlock, std::string data)
 	  timestamp(0),
 	  data(data),
 	  PrevBlock(&previousBlock),
-	  merkle_root{0},
+	  merkle_root{},
 	  hash{}
 {
 }
@@ -43,6 +43,21 @@ std::string Block::getData()
 std::array<unsigned char, SHA256_DIGEST_LENGTH> Block::getHash()
 {
 	return hash;
+}
+std::array<unsigned char, SHA256_DIGEST_LENGTH> Block::getMerkleRoot()
+{
+	return merkle_root;
+}
+
+std::array<unsigned char, SHA256_DIGEST_LENGTH> Block::getPrevBlockHash()
+{
+	if (PrevBlock)
+		return PrevBlock->hash;
+	else
+	{
+		std::array<unsigned char, SHA256_DIGEST_LENGTH> emptyHash = {0};
+		return emptyHash;
+	}
 }
 
 // Function to output block information

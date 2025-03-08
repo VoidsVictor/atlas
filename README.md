@@ -29,9 +29,9 @@
 
 ## TODO
 
-### v0.0.1 (Pre-Alpha)
+### v0.0.1 (Pre-Alpha 0)
 
-- [ ] Implement Block
+- [x] Implement Block
     - [x] Change data part to json or dynamic string
     - [x] Make the merkle root implementation
     - [x] Fix the deprecated openssl component
@@ -42,3 +42,8 @@
 - [ ] Make the human interface
 - [x] Develop a basic Makefile
 - [x] Implement a test system
+
+### v0.0.2 (Pre-Alpha 1)
+
+- [ ] Make the data section robust by making it a class
+    - [ ] Have the ability to store transactional data

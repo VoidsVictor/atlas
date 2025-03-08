@@ -39,6 +39,8 @@ class Block
 		time_t getTimestamp();
 		std::string getData();
 		std::array<unsigned char, SHA256_DIGEST_LENGTH> getHash();
+		std::array<unsigned char, SHA256_DIGEST_LENGTH> getMerkleRoot();
+		std::array<unsigned char, SHA256_DIGEST_LENGTH> getPrevBlockHash();
 
 		// Mine Block
 		// TODO Should contain a smart contract executer object as input to execute smart contracts
