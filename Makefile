@@ -14,10 +14,10 @@ $(BIN) $(BIN_TESTS):
 	mkdir -p $(BIN) $(BIN_TESTS)
 
 # Build test executable
-$(BIN_TESTS)/test_block: $(SRC)/Block.cpp $(SRC)/utils.cpp $(TESTS)/test_block.cpp | $(BIN) $(BIN_TESTS)
+$(BIN_TESTS)/test_block: $(SRC)/BlockChain/Block.cpp $(SRC)/utils.cpp $(TESTS)/test_block.cpp | $(BIN) $(BIN_TESTS)
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) $^ $(LDFLAGS) $(LDTESTFLAGS) -o $@
 
-$(BIN_TESTS)/test_blockchain: $(SRC)/Block.cpp $(SRC)/BlockChain.cpp $(SRC)/utils.cpp $(TESTS)/test_blockchain.cpp | $(BIN) $(BIN_TESTS)
+$(BIN_TESTS)/test_blockchain: $(SRC)/BlockChain/Block.cpp $(SRC)/BlockChain/BlockChain.cpp $(SRC)/utils.cpp $(TESTS)/test_blockchain.cpp | $(BIN) $(BIN_TESTS)
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) $^ $(LDFLAGS) $(LDTESTFLAGS) -o $@
 
 # Run tests

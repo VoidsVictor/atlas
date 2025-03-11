@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "Block.hpp"
-#include "BlockChain.hpp"
+#include "BlockChain/Block.hpp"
+#include "BlockChain/BlockChain.hpp"
 #include "utils.hpp"
 
 using namespace std;

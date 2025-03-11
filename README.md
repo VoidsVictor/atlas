@@ -24,6 +24,13 @@
 
 4. Install WASMedge
 
+## Notes
+
+1. Compile contracts written in C++ with
+```sh
+    emcc contract.cpp -o contract.wasm -sSTANDALONE_WASM -Wl,--no-entry
+```
+
 ## Structure of the Data Section
 
 - Data section is basically a string
@@ -35,6 +42,14 @@
 
 - [ ] Make the Smart Contract System (SCS)
     - [ ] Implement a generalised DHT with Kademlia
+    - [ ] Design the Context API
+- [ ] Implement Emissary - cross chain communicator
+- [ ] Implement Colossus
+    - [ ] Evaluate node performance
+    - [ ] Advertise node performance
+    - [ ] Receive smart contracts
+    - [x] Execute smart contracts with WASMedge Runtime
+    - [ ] Give back the contract output to the system
 - [ ] Make the Peer Discovery System (PDS)
 - [ ] Make the service
 - [ ] Make the human interface
@@ -50,6 +65,6 @@
 
 - [ ] Fix inconsistencies and security issues
 - [ ] Refactor the code
-- [ ] Implement concurency and parallel processing
+- [ ] Implement concurrency and parallel processing
 - [ ] Make the data section robust by making it a class
     - [ ] Have the ability to store transactional data

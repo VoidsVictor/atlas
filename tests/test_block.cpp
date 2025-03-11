@@ -1,4 +1,4 @@
-#include "Block.hpp"
+#include "BlockChain/Block.hpp"
 #include "utils.hpp"
 #include <cstring> // for memcmp
 #include <gtest/gtest.h>

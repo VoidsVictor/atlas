@@ -6,6 +6,8 @@
 #include <sstream>
 #include <wasmedge/wasmedge.h>
 
+#include "Colossus/compiler.hpp"
+
 using namespace std;
 
 // Function to check for file
@@ -34,10 +36,19 @@ bool compile(string filename)
 	/* Create the configure context. */
 	WasmEdge_ConfigureContext* ConfCxt = WasmEdge_ConfigureCreate();
 
+	// ✅ Enable WASI for standalone execution
+	WasmEdge_ConfigureAddHostRegistration(ConfCxt, WasmEdge_HostRegistration_Wasi);
+
+	// ✅ Enable bulk memory & reference types for full optimization
+	WasmEdge_ConfigureCompilerSetOptimizationLevel(ConfCxt, WasmEdge_CompilerOptimizationLevel_O3);
+	WasmEdge_ConfigureCompilerSetDumpIR(ConfCxt, false);
+	WasmEdge_ConfigureCompilerSetGenericBinary(ConfCxt, true);
+	WasmEdge_ConfigureCompilerSetInterruptible(ConfCxt, false);
+
 	/* Result. */
 	WasmEdge_Result Res;
 
-	/* Create the compiler context. The configure context can be NULL. */
+	/* Create the compiler context. */
 	WasmEdge_CompilerContext* CompilerCxt = WasmEdge_CompilerCreate(ConfCxt);
 
 	// Creating filepath of the input file
@@ -52,7 +63,7 @@ bool compile(string filename)
 
 	if (!WasmEdge_ResultOK(Res))
 	{
-		// cout << "Compilation failed: " << WasmEdge_ResultGetMessage(Res) << endl;
+		cout << "Compilation failed: " << WasmEdge_ResultGetMessage(Res) << endl;
 		return false;
 	}
 
@@ -61,31 +72,31 @@ bool compile(string filename)
 	return true;
 }
 
-int main(int argc, char* argv[])
-{
-	string filename;
+// int main(int argc, char* argv[])
+// {
+// 	string filename;
 
-	// Check if filename is provided as a CLI argument
-	if (argc > 1)
-	{
-		filename = argv[1];
-	}
-	else
-	{
-		cout << "Enter the filename (without extension): ";
-		cin >> filename;
-	}
+// 	// Check if filename is provided as a CLI argument
+// 	if (argc > 1)
+// 	{
+// 		filename = argv[1];
+// 	}
+// 	else
+// 	{
+// 		cout << "Enter the filename (without extension): ";
+// 		cin >> filename;
+// 	}
 
-	cout << "Compiling " << filename << "..." << endl;
+// 	cout << "Compiling " << filename << "..." << endl;
 
-	if (compile(filename))
-	{
-		cout << "Compilation successful!" << endl;
-	}
-	else
-	{
-		cout << "Compilation failed." << endl;
-	}
+// 	if (compile(filename))
+// 	{
+// 		cout << "Compilation successful!" << endl;
+// 	}
+// 	else
+// 	{
+// 		cout << "Compilation failed." << endl;
+// 	}
 
-	return 0;
-}
+// 	return 0;
+// }

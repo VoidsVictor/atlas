@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "BlockChain.hpp"
+#include "BlockChain/BlockChain.hpp"
 
 // Test Blockchain Initialization
 TEST(BlockChainTest, GenesisBlockExists)

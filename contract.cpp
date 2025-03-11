@@ -3,7 +3,7 @@
 extern "C"
 {
 	EMSCRIPTEN_KEEPALIVE
-	int contract_function(int x)
+	int contract(int x)
 	{
 		return x * 2;
 	}

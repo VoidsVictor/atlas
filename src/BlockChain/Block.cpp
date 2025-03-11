@@ -2,7 +2,7 @@
 #include <sstream>
 #include <string>
 
-#include "Block.hpp"
+#include "BlockChain/Block.hpp"
 #include "utils.hpp"
 
 // Block initialization function
